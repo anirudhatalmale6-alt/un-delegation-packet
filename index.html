@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>UN 20th Human Rights Summit — Delegation Packet</title>
+<meta property="og:title" content="United Nations 20th Human Rights Summit — Haitian Civil Society Delegation">
+<meta property="og:description" content="Digital Delegation Packet. Flip through the program, welcome, priorities, delegates and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --navy:#0A1E4E; --navy3:#081737; --gold:#C9A24B; --gold-lt:#E7C86B; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{font-family:'Montserrat',system-ui,sans-serif;
+    background:radial-gradient(120% 90% at 50% 0%, #16346f 0%, var(--navy) 45%, var(--navy3) 100%);
+    color:#fff; min-height:100%; display:flex; flex-direction:column; align-items:center;
+    padding:14px 10px 22px; overflow-x:hidden;}
+  header{text-align:center; margin-bottom:12px;}
+  header .kick{font-weight:700; font-size:10px; letter-spacing:.24em; color:var(--gold-lt); text-transform:uppercase;}
+  header h1{font-weight:900; font-size:clamp(15px,4.6vw,22px); margin-top:5px; line-height:1.15;}
+  header h1 span{color:var(--gold-lt);}
+  .stage{width:100%; max-width:560px; display:flex; justify-content:center; touch-action:pan-y;}
+  #flipbook{ box-shadow:0 20px 50px rgba(0,0,0,.5); }
+  #flipbook img{width:100%; height:100%; display:block;}
+  .controls{display:flex; align-items:center; gap:16px; margin-top:16px;}
+  .btn{appearance:none; border:1.5px solid var(--gold); background:rgba(201,162,75,.14); color:#fff;
+    font-family:'Montserrat'; font-weight:800; font-size:13px; letter-spacing:.04em;
+    padding:10px 18px; border-radius:30px; cursor:pointer; display:flex; align-items:center; gap:8px;}
+  .btn:active{transform:scale(.96);}
+  .pagemark{font-weight:700; font-size:12px; color:#c9d4ea; min-width:74px; text-align:center;}
+  .hint{margin-top:12px; font-size:11px; color:#9fb0d0; letter-spacing:.03em;}
+  .dl{margin-top:16px;}
+  .dl a{color:var(--navy3); background:linear-gradient(135deg,#E7C86B,#C9A24B 60%,#A8862F);
+    text-decoration:none; font-weight:800; font-size:12.5px; letter-spacing:.05em;
+    padding:11px 22px; border-radius:30px; display:inline-flex; align-items:center; gap:8px;
+    box-shadow:0 8px 20px rgba(0,0,0,.3);}
+  .loading{color:#c9d4ea; font-size:13px; padding:60px 0;}
+</style>
+</head>
+<body>
+  <header>
+    <div class="kick">Haitian Civil Society Delegation</div>
+    <h1>United Nations <span>20<sup>th</sup> Human Rights Summit</span></h1>
+  </header>
+
+  <div class="stage">
+    <div id="flipbook"><div class="loading">Loading booklet…</div></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="prev">‹ Prev</button>
+    <div class="pagemark" id="mark">— / —</div>
+    <button class="btn" id="next">Next ›</button>
+  </div>
+  <div class="hint">Swipe or tap the page edges to turn. Pinch to zoom on the PDF.</div>
+  <div class="dl"><a href="UN-Delegation-Packet-DRAFT.pdf" download>⬇ Download PDF</a></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+  <script>
+    var PAGES = [];
+    for (var i=1;i<=14;i++){ PAGES.push('pages/p'+String(i).padStart(2,'0')+'.png'); }
+
+    function calcSize(){
+      var vw = Math.min(window.innerWidth-24, 540);
+      var w = vw, h = Math.round(w*794/559);
+      var maxH = window.innerHeight - 220;
+      if (h > maxH){ h = maxH; w = Math.round(h*559/794); }
+      return {w:w,h:h};
+    }
+
+    var el = document.getElementById('flipbook');
+    el.innerHTML = '';
+    var s = calcSize();
+    var pageFlip = new St.PageFlip(el, {
+      width: s.w, height: s.h,
+      size: 'stretch',
+      minWidth: 240, maxWidth: 560,
+      minHeight: 340, maxHeight: 800,
+      drawShadow: true, flippingTime: 700,
+      usePortrait: true, showCover: true,
+      mobileScrollSupport: true, maxShadowOpacity: 0.5
+    });
+    pageFlip.loadFromImages(PAGES);
+
+    var mark = document.getElementById('mark');
+    function updMark(){
+      var cur = pageFlip.getCurrentPageIndex()+1;
+      mark.textContent = cur + ' / ' + PAGES.length;
+    }
+    pageFlip.on('flip', updMark);
+    pageFlip.on('init', updMark);
+    document.getElementById('prev').onclick = function(){ pageFlip.flipPrev(); };
+    document.getElementById('next').onclick = function(){ pageFlip.flipNext(); };
+
+    var rt;
+    window.addEventListener('resize', function(){
+      clearTimeout(rt);
+      rt = setTimeout(function(){
+        var ns = calcSize();
+        pageFlip.update({width:ns.w, height:ns.h, size:'stretch'});
+      }, 200);
+    });
+  </script>
+</body>
+</html>
