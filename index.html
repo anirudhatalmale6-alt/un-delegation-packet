@@ -6,10 +6,14 @@
 <title>UN 20th Human Rights Summit — Delegation Packet</title>
 <meta property="og:title" content="United Nations 20th Human Rights Summit — Haitian Civil Society Delegation">
 <meta property="og:description" content="Digital Delegation Packet. Flip through the program, welcome, priorities, delegates and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anirudhatalmale6-alt.github.io/un-delegation-packet/">
+<meta property="og:image" content="https://anirudhatalmale6-alt.github.io/un-delegation-packet/pages/p01.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root{ --navy:#0A1E4E; --navy3:#081737; --gold:#C9A24B; --gold-lt:#E7C86B; }
+  :root{ --navy:#00215C; --navy3:#001741; --gold:#EFA31E; --gold-lt:#F4B740; }
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{height:100%;}
   body{font-family:'Montserrat',system-ui,sans-serif;
@@ -30,11 +34,16 @@
   .btn:active{transform:scale(.96);}
   .pagemark{font-weight:700; font-size:12px; color:#c9d4ea; min-width:74px; text-align:center;}
   .hint{margin-top:12px; font-size:11px; color:#9fb0d0; letter-spacing:.03em;}
-  .dl{margin-top:16px;}
-  .dl a{color:var(--navy3); background:linear-gradient(135deg,#E7C86B,#C9A24B 60%,#A8862F);
+  .dl{margin-top:16px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center;}
+  .dl a{color:var(--navy3); background:linear-gradient(135deg,#F4B740,#EFA31E 60%,#DF9001);
     text-decoration:none; font-weight:800; font-size:12.5px; letter-spacing:.05em;
     padding:11px 22px; border-radius:30px; display:inline-flex; align-items:center; gap:8px;
     box-shadow:0 8px 20px rgba(0,0,0,.3);}
+  .dl a#share{background:rgba(239,163,30,.16); color:#fff; border:1.5px solid var(--gold);}
+  .toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:#00215C; border:1.5px solid var(--gold); color:#fff; font-size:12.5px; font-weight:700;
+    padding:11px 22px; border-radius:24px; opacity:0; pointer-events:none; transition:.3s; z-index:9;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
   .loading{color:#c9d4ea; font-size:13px; padding:60px 0;}
 </style>
 </head>
@@ -53,8 +62,12 @@
     <div class="pagemark" id="mark">— / —</div>
     <button class="btn" id="next">Next ›</button>
   </div>
-  <div class="hint">Swipe or tap the page edges to turn. Pinch to zoom on the PDF.</div>
-  <div class="dl"><a href="UN-Delegation-Packet.pdf" download>⬇ Download PDF</a></div>
+  <div class="hint">Swipe or tap the page edges to turn, just like a real book.</div>
+  <div class="dl">
+    <a href="UN-Delegation-Packet.pdf" download>⬇ Download PDF</a>
+    <a href="#" id="share" role="button">⤴ Share</a>
+  </div>
+  <div class="toast" id="toast">Link copied to clipboard</div>
 
   <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
   <script>
@@ -63,9 +76,9 @@
 
     function calcSize(){
       var vw = Math.min(window.innerWidth-24, 540);
-      var w = vw, h = Math.round(w*794/559);
-      var maxH = window.innerHeight - 220;
-      if (h > maxH){ h = maxH; w = Math.round(h*559/794); }
+      var w = vw, h = Math.round(w*2104/1488);
+      var maxH = window.innerHeight - 230;
+      if (h > maxH){ h = maxH; w = Math.round(h*1488/2104); }
       return {w:w,h:h};
     }
 
@@ -92,6 +105,24 @@
     pageFlip.on('init', updMark);
     document.getElementById('prev').onclick = function(){ pageFlip.flipPrev(); };
     document.getElementById('next').onclick = function(){ pageFlip.flipNext(); };
+
+    // Share: native share sheet on mobile, copy-link fallback on desktop
+    var toast = document.getElementById('toast');
+    function showToast(msg){ toast.textContent = msg; toast.classList.add('show');
+      setTimeout(function(){ toast.classList.remove('show'); }, 2200); }
+    document.getElementById('share').onclick = function(e){
+      e.preventDefault();
+      var data = {
+        title: 'UN 20th Human Rights Summit — Haitian Civil Society Delegation',
+        text: 'Digital Delegation Packet — flip through the program, delegates, priorities and more.',
+        url: location.href
+      };
+      if (navigator.share){ navigator.share(data).catch(function(){}); }
+      else if (navigator.clipboard){ navigator.clipboard.writeText(location.href)
+        .then(function(){ showToast('Link copied to clipboard'); })
+        .catch(function(){ showToast(location.href); }); }
+      else { window.prompt('Copy this link to share:', location.href); }
+    };
 
     var rt;
     window.addEventListener('resize', function(){
