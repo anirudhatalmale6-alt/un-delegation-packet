@@ -50,7 +50,7 @@
 <body>
   <header>
     <div class="kick">Haitian Civil Society Delegation</div>
-    <h1>United Nations <span>20<sup>th</sup> Human Rights Summit</span></h1>
+    <h1>United Nations <span>20<sup>th</sup> International Human Rights Summit</span></h1>
   </header>
 
   <div class="stage">
@@ -73,7 +73,7 @@
   <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
   <script>
     var PAGES = [];
-    for (var i=1;i<=16;i++){ PAGES.push('pages/p'+String(i).padStart(2,'0')+'.jpg'); }
+    for (var i=1;i<=15;i++){ PAGES.push('pages/p'+String(i).padStart(2,'0')+'.jpg'); }
 
     function calcSize(){
       var vw = Math.min(window.innerWidth-24, 540);
@@ -114,7 +114,7 @@
     document.getElementById('share').onclick = function(e){
       e.preventDefault();
       var data = {
-        title: 'UN 20th Human Rights Summit — Haitian Civil Society Delegation',
+        title: 'UN 20th International Human Rights Summit — Haitian Civil Society Delegation',
         text: 'Digital Delegation Packet — flip through the program, delegates, priorities and more.',
         url: location.href
       };
